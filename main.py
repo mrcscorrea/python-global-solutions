@@ -1,11 +1,34 @@
-# ── Constantes de exibição (Visualização do código) ────────────────────────────────────────────────────
+# ===========================================================================
+#  ORBIS SENTINEL — Módulo principal de interação com o usuário
+#
+#  Disciplina: Computational Thinking With Python (CTWP)
+#  Aluno: Marcos Vinícios Corrêa dos Santos
+#  Matrícula: RM571080
+#
+#  Global Solution 2026 · FIAP · Engenharia de Software · 1º Ano
+# ===========================================================================
+#
+#  Este módulo implementa as funções principais do sistema:
+#   - ler_float()
+#   - ler_int()
+#   - ler_texto()
+#   - ler_data()
+#   - coleta_simulada()
+#   - processar_dados()
+#   - gerar_alerta()
+#   - main()
+#
+#  Ele interage com o módulo de dados e executa a lógica principal
+#  do sistema de alerta de incêndios.
+# ===========================================================================
 from dados import REGIOES
 
+# ── Constantes de exibição (Visualização do código) ────────────────────────────
 LINHA_DUPLA  = "=" * 72
 LINHA_SIMPLES = "-" * 72
 LINHA_TRACEJADA = "·" * 72
 
-# Mapa de emojis por nível (fallback seguro para terminais sem unicode)
+# ── Mapa de emojis por nível (fallback seguro para terminais sem unicode) ────────
 ICONE_NIVEL = {
     "CRITICO":  "[!!!]",
     "ALERTA":   "[!! ]",
@@ -14,6 +37,7 @@ ICONE_NIVEL = {
     "INVALIDO": "[ERR]"
 }
 
+# ── Descrições de risco ───────────────────────────────────────────────────────────
 DESCRICAO_RISCO = {
     "CRITICO": "Situação de incêndios críticas. Acione a equipe de campo imediatamente!",
     "ALERTA": "Incêndios eminentes. Redobre a atenção e mantenha a equiipe de campo em prontidão.",
@@ -22,68 +46,176 @@ DESCRICAO_RISCO = {
     "INVALIDO": "Dados inválidos. Verifique as informações."
 }
 
-# Falta colocar condicionais para evitar que o usuário insira strings onde deveriam ser números, números onde deveriam ser floats, etc.
+# ===========================================================================
+# ler_float(mensagem) - Verificação de inputs para o tipo primitivo FLOAT.
+#
+#  Trata entradas inválidas (como letras, símbolos ou strings vazias)
+#  garantindo que a função retorne sempre um valor numérico válido.
+#
+#  Argumentos:
+#    mensagem: texto exibido ao usuário solicitando o valor
+#
+#  Retorna:
+#    float: número decimal válido informado pelo usuário
+# =============================================================================
+def ler_float(mensagem):
+    while True:
+        valor = input(mensagem)
+
+        valor_teste = valor.replace(".", "", 1).replace("-", "", 1)
+
+        if valor_teste.isdigit():
+            return float(valor)
+
+        print("Valor inválido. Digite um número decimal.")
+
+# =============================================================================
+# ler_int(mensagem) - Verificação de inputs para o tipo primitivo INT.
+#
+#  Trata entradas inválidas (como letras, símbolos ou strings vazias)
+#  garantindo que a função retorne sempre um número inteiro válido.
+#
+#  Argumentos:
+#    mensagem: texto exibido ao usuário solicitando o valor
+#
+#  Retorna:
+#    int: número inteiro válido informado pelo usuário
+# =============================================================================
+def ler_int(mensagem):
+    while True:
+        valor = input(mensagem)
+
+        valor_teste = valor.replace("-", "", 1)
+
+        if valor_teste.isdigit():
+            return int(valor)
+
+        print("Valor inválido. Digite um número inteiro.")
+
+# =============================================================================
+# ler_texto(mensagem) - Verificação de inputs para o tipo primitivo STRING.
+#
+#  Trata entradas inválidas (como strings vazias) garantindo que a função
+#  retorne sempre uma string válida.
+#
+#  Argumentos:
+#    mensagem: texto exibido ao usuário solicitando o valor
+#
+#  Retorna:
+#    str: string válida informada pelo usuário
+# =============================================================================
+def ler_texto(mensagem):
+    while True:
+        texto = input(mensagem).strip()
+
+        if texto:
+            return texto
+
+        print("Texto inválido. Digite novamente.")
+
+# =============================================================================
+# ler_data() - Verificação de inputs para o tipo primitivo STRING.
+#
+#  Trata entradas inválidas (como strings vazias) garantindo que a função
+#  retorne sempre uma string válida.
+#
+#  Argumentos:
+#    N/A
+#
+#  Retorna:
+#    str: string válida informada pelo usuário
+# =============================================================================
+def ler_data():
+    while True:
+        data = input(
+            "Digite a data completa (DD/MM/AAAA HH:MM) e pressione ENTER: "
+        )
+
+        if len(data) != 16:
+            print("Formato inválido.")
+            continue
+
+        if "/" not in data or ":" not in data:
+            print("Formato inválido.")
+            continue
+
+        return data
+
+# =============================================================================
+# coleta_simulada() - Coleta de dados simulados.
+#
+#  Solicita ao usuário informações sobre uma região e retorna um dicionário
+#  com os dados coletados.
+#
+#  Argumentos:
+#    N/A, executado dentro do main() com base em sua escolha
+#
+#  Retorna:
+#    dict: dicionário com os dados coletados
+# =============================================================================
 def coleta_simulada():
     while True:
-        regiao = input("Digite a região que você vai simular e pressione ENTER: ")
-        lat = float(input("Digite a Latitude desejada e pressione ENTER: "))
+        regiao = ler_texto("Digite a região que você vai simular e pressione ENTER: ")
+        lat = ler_float("Digite a Latitude desejada e pressione ENTER: ")
 
         if lat < -90 or lat > 90:
             print("Latitude inválida. Digite novamente.")
             continue
         
-        lon = float(input("Digite a Longitude desejada e pressione ENTER: "))
+        lon = ler_float("Digite a Longitude desejada e pressione ENTER: ")
 
         if lon < -180 or lon > 180:
             print("Longitude inválida. Digite novamente.")
             continue
         
-        area = float(input("Digite a área em km² desejada e pressione ENTER: "))
+        area = ler_int("Digite a área em km² desejada e pressione ENTER: ")
 
         if area <= 0:
             print("Área inválida. Digite novamente.")
             continue
         
-        ndvi = float(input("Digite o NDVI (Índice de Vegetação por Diferença Normalizada) desejado e pressione ENTER (deve ser decimal!): "))
+        ndvi = ler_float("Digite o NDVI (Índice de Vegetação por Diferença Normalizada) desejado e pressione ENTER (deve ser decimal!): ")
 
         if ndvi < 0 or ndvi > 1:
             print("NDVI inválido. Digite novamente.")
             continue
 
-        focos_input = int(input("Digite um número inteiro para o foco de calor e pressione ENTER: "))
+        focos_input = ler_int("Digite um número inteiro para o foco de calor e pressione ENTER: ")
 
         if focos_input < 0:
             print("Focos de calor inválidos. Digite novamente.")
             continue
 
-        umidade = int(input("Digite o percentual (sem porcentagem) da umidade do solo e pressione ENTER: "))
+        umidade = ler_int("Digite o percentual (sem porcentagem) da umidade do solo e pressione ENTER: ")
 
         if umidade < 0 or umidade > 100:
             print("Umidade do solo inválida. Digite novamente.")
             continue
 
-        if umidade < 0 or umidade > 100:
-            print("Umidade do solo inválida. Digite novamente.")
-            continue
-
-        historico = [int(x) for x in input("Digite o histórico de focos dos últimos 7 dias separados por espaço: ").split()]
-        
-        if (foco < 0 for foco in historico):
-            print("Histórico inválido. Digite novamente.")
-            continue
+        historico = [int(x) for x in ler_texto("Digite o histórico de focos dos últimos 7 dias separados por espaço: ").split()]
 
         if len(historico) != 7:
             print("Histórico de focos inválido. Digite novamente.")
             continue
 
-        datainput = input("Digite a data completa do registro (DD/MM/AAAA HH:MM) e pressione ENTER: ")
-
+        datainput = ler_data()
         data, hora = datainput.split(" ")
         dia, mes, ano = data.split("/")
         timestamp = f"{ano}-{mes}-{dia}T{hora}"
 
         return regiao, lat, lon, area, ndvi, focos_input, umidade, historico, datainput, timestamp
 
+# =============================================================================
+# classificar_risco(dados) - Classifica o nível de risco da região.
+#
+#  Recebe um dicionário com os dados da região e retorna o nível de risco.
+#
+#  Argumentos:
+#    dados: dicionário com os dados da região
+#
+#  Retorna:
+#    str: nível de risco (CRITICO, ALERTA, ATENCAO, NORMAL, INVALIDO)
+# =============================================================================
 def classificar_risco(dados):
     lat = float(dados["lat"])
     lon = float(dados["lon"])
@@ -95,18 +227,31 @@ def classificar_risco(dados):
 
     if lat < -90 or lat > 90 or lon < -180 or lon > 180 or area <= 0 or ndvi < 0 or ndvi > 1 or focos_input < 0 or umidade < 0 or umidade > 100 or len(historico) != 7:
         return "INVALIDO"
-    
+
     if focos_input >= 10 or (umidade <= 10 and ndvi <= 0.3):
         return "CRITICO"
-    
+
     if focos_input >= 5 or (umidade <= 20 and ndvi <= 0.5):
         return "ALERTA"
-    
+
     if focos_input >= 2 or (umidade <= 30 and ndvi <= 0.7):
         return "ATENCAO"
-    
+
     return "NORMAL"
 
+# =============================================================================
+# gerar_alerta(dados, nivel_risco) - Gera um alerta com base no nível de risco.
+#
+#  Recebe um dicionário com os dados da região e o nível de risco, e retorna
+#  um dicionário com os dados formatados para exibição.
+#
+#  Argumentos:
+#    dados: dicionário com os dados da região
+#    nivel_risco: nível de risco (CRITICO, ALERTA, ATENCAO, NORMAL, INVALIDO)
+#
+#  Retorna:
+#    dict: dicionário com os dados formatados para exibição
+# =============================================================================
 def gerar_alerta(dados, nivel_risco):
     regiao = dados["regiao"]
     lat = dados["lat"]
@@ -133,13 +278,31 @@ def gerar_alerta(dados, nivel_risco):
     print(f"Histórico de focos: {historico}")
     print(f"Timestamp: {timestamp}")
 
-
+# =============================================================================
+# processar_dados() - Processa os dados das regiões.
+#
+#  Recebe um dicionário com os dados da região importados do arquivo 
+#  dados.py e retorna o nível de risco para cada uma.
+#
+#  Retorna:
+#    dict: dicionário com os dados da região e o nível de risco
+# =============================================================================
 def processar_dados():
     for regiao in REGIOES:
         risco = classificar_risco(regiao)
         gerar_alerta(regiao, risco)
 
-
+# =============================================================================
+# main() - Função principal do programa.
+#
+#  Exibe o menu de interações e permite que o usuário escolha uma opção.
+#
+#  Argumentos:
+#    N/A
+#
+#  Retorna:
+#    N/A
+# =============================================================================
 def main():
 
     print()
