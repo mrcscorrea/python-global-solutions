@@ -11,4 +11,3 @@ Estou tendo problemas com a importação dos dados, veja bem, a principio, o sis
 
 ### Prompt para auxílio na validação de inputs (tratamento de erro)
 Observe o código acima, quero que você me ajude adicionando sistemas de verificação nos inputs, para que o código não quebre se o usuário não seguir a lógica (exemplo, coloco uma letra onde é um float).
-

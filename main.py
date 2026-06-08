@@ -14,6 +14,7 @@
 #   - ler_texto()
 #   - ler_data()
 #   - coleta_simulada()
+#   - validar_dados()
 #   - processar_dados()
 #   - gerar_alerta()
 #   - main()
@@ -31,9 +32,9 @@ LINHA_TRACEJADA = "·" * 72
 # ── Mapa de emojis por nível (fallback seguro para terminais sem unicode) ────────
 ICONE_NIVEL = {
     "CRITICO":  "[!!!]",
-    "ALERTA":   "[!! ]",
-    "ATENCAO":  "[ ! ]",
-    "NORMAL":   "[ OK]",
+    "ALERTA":   "[!!]",
+    "ATENCAO":  "[!]",
+    "NORMAL":   "[OK]",
     "INVALIDO": "[ERR]"
 }
 
@@ -46,6 +47,23 @@ DESCRICAO_RISCO = {
     "INVALIDO": "Dados inválidos. Verifique as informações."
 }
 
+# ── Limiares das regras de negócio ────────────────────────────────────────────────
+LIMIARES = {
+    "critico": {
+        "focos_calor_min": 10,
+        "umidade_max": 20.0,
+        "ndvi_max": 0.30
+    },
+    "alerta": {
+        "focos_calor_min": 5,
+        "umidade_max": 35.0
+    },
+    "atencao": {
+        "focos_calor_min": 1,
+        "ndvi_max": 0.50,
+        "umidade_max": 45.0
+    }
+}
 # ===========================================================================
 # ler_float(mensagem) - Verificação de inputs para o tipo primitivo FLOAT.
 #
@@ -206,6 +224,49 @@ def coleta_simulada():
         return regiao, lat, lon, area, ndvi, focos_input, umidade, historico, datainput, timestamp
 
 # =============================================================================
+# validar_dados(dados) - Valida os dados da região.
+#
+#  Recebe um dicionário com os dados da região e verifica se os dados são
+#  inválidos. Caso sejam inválidos, retorna False.
+#
+#  Argumentos:
+#    dados: dicionário com os dados da região
+#
+#  Retorna:
+#    bool: True se os dados forem válidos, False caso contrário
+# =============================================================================
+def validar_dados(dados):
+
+    if dados["lat"] < -90 or dados["lat"] > 90:
+        return False
+
+    if dados["lon"] < -180 or dados["lon"] > 180:
+        return False
+
+    if dados["area_km2"] <= 0:
+        return False
+
+    if dados["ndvi_index"] < 0 or dados["ndvi_index"] > 1:
+        return False
+
+    if dados["focos_calor"] < 0:
+        return False
+
+    if dados["umidade_solo_percent"] < 0:
+        return False
+
+    if dados["umidade_solo_percent"] > 100:
+        return False
+
+    if len(dados["historico_focos"]) != 7:
+        return False
+
+    if any(foco < 0 for foco in dados["historico_focos"]):
+        return False
+
+    return True
+
+# =============================================================================
 # classificar_risco(dados) - Classifica o nível de risco da região.
 #
 #  Recebe um dicionário com os dados da região e retorna o nível de risco.
@@ -225,16 +286,16 @@ def classificar_risco(dados):
     umidade = int(dados["umidade_solo_percent"])
     historico = [int(x) for x in (dados["historico_focos"])]
 
-    if lat < -90 or lat > 90 or lon < -180 or lon > 180 or area <= 0 or ndvi < 0 or ndvi > 1 or focos_input < 0 or umidade < 0 or umidade > 100 or len(historico) != 7:
+    if not validar_dados(dados):
         return "INVALIDO"
 
-    if focos_input >= 10 or (umidade <= 20 and ndvi <= 0.3):
+    if focos_input >= LIMIARES["critico"]["focos_calor_min"] or (umidade <= LIMIARES["critico"]["umidade_max"] and ndvi <= LIMIARES["critico"]["ndvi_max"]):
         return "CRITICO"
 
-    if focos_input >= 5 or (umidade <= 35 and ndvi <= 0.3):
+    if focos_input >= LIMIARES["alerta"]["focos_calor_min"] or (umidade <= LIMIARES["alerta"]["umidade_max"] and ndvi <= LIMIARES["alerta"]["ndvi_max"]):
         return "ALERTA"
 
-    if focos_input >= 1 or ndvi <= 0.5:
+    if focos_input >= LIMIARES["atencao"]["focos_calor_min"] or (umidade <= LIMIARES["atencao"]["umidade_max"] and ndvi <= LIMIARES["atencao"]["ndvi_max"]):
         return "ATENCAO"
 
     return "NORMAL"
@@ -339,8 +400,6 @@ def main():
         case 2:
             print("Processando dados do banco de dados...")
             processar_dados()
-        case _:
-            print("Opção inválida. Digite novamente")
 
     print(LINHA_DUPLA)
 

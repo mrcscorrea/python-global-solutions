@@ -6,17 +6,17 @@
 #
 #  Este módulo centraliza os dados simulados que representam leituras dos
 #  satélites NASA FIRMS (focos de calor), NDVI (vegetação) e umidade do solo
-#  fornecida pelo INPE/Copernicus para regiões monitoradas pelo Orbis Sentinel.
+#  fornecida pelo INPE para regiões monitoradas pelo Orbis Sentinel
 #
-#  Formato baseado no exemplo do enunciado CTWP:
+#  Formato:
 #  {"regiao": str, "ndvi_index": float, "focos_calor": int,
 #   "umidade_solo_percent": float}
 #
 #  Cada registro também inclui:
-#   - lat / lon        : coordenadas centrais da região
-#   - area_km2         : tamanho da região monitorada
+#   - lat / lon        : coordenadas da região
+#   - area_km2         : tamanho da região
 #   - historico_focos  : lista com contagem dos últimos 7 dias
-#   - timestamp        : data/hora da leitura orbital
+#   - timestamp        : data/hora da leitura
 # =============================================================================
 
 REGIOES = [
@@ -116,19 +116,7 @@ REGIOES = [
         "historico_focos": [0, 0, 0, 0, 0, 0, 0],
         "timestamp": "2026-06-01T08:00"
     },
-    # ── Região 9 — registro com DADOS INVÁLIDOS (teste de robustez) ───────────
-    # {
-    #     "regiao": "Sensor_Falha_RO_Setor_Norte",
-    #     "lat": None,
-    #     "lon": None,
-    #     "area_km2": None,
-    #     "ndvi_index": None,
-    #     "focos_calor": None,
-    #     "umidade_solo_percent": None,
-    #     "historico_focos": [],
-    #     "timestamp": "2026-06-01T08:00"
-    # },
-    # ── Região 10 — CRÍTICO ───────────────────────────────────────────────────
+    # ── Região 9 — CRÍTICO ───────────────────────────────────────────────────
     {
         "regiao": "Cerrado_TO_Setor_Norte",
         "lat": -8.9,
@@ -141,20 +129,3 @@ REGIOES = [
         "timestamp": "2026-06-01T08:00"
     },
 ]
-
-# Limiares das regras de negócio (espelham RN01 do Backlog do Produto)
-LIMIARES = {
-    "critico": {
-        "focos_calor_min": 10,
-        "umidade_max": 20.0,
-        "ndvi_max": 0.30
-    },
-    "alerta": {
-        "focos_calor_min": 5,
-        "umidade_max": 35.0
-    },
-    "atencao": {
-        "focos_calor_min": 1,
-        "ndvi_max": 0.50
-    }
-}

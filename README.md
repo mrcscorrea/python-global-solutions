@@ -2,7 +2,7 @@
 
 ## Global Solution 2026 · FIAP · Engenharia de Software · 1º Ano
 
-Este é um sistema de **alerta de incêndios** que recebe informações digitadas pelo usuário, como latitude, longitude, área monitorada, NDVI, focos de calor, umidade do solo, histórico de focos e data, ele então processa esses dados para então, classificar o nível de risco da região e gerar alertas com base no nível de risco.
+Este é um sistema de **alerta de incêndios** que recebe informações digitadas pelo usuário, como latitude, longitude, área monitorada, NDVI, focos de calor, umidade do solo, histórico de focos e data, ele então processa esses dados com base em **limiares** para então, classificar o nível de risco da região e gerar alertas com base no nível de risco.
 
 O sistema também possui funções que permitem a **coleta de dados de regiões pré-definidas**, a **geração de relatórios** e a **exibição de alertas** com base no nível de risco. Além disso, o sistema possui um **sistema de validação de inputs** para garantir que o usuário insira apenas dados válidos.
 
@@ -34,6 +34,7 @@ A utilização de Python para o desenvolvimento do Orbis Sentinel justifica-se p
 - **ler_texto(mensagem)**: Função responsável por solicitar ao usuário um valor string e validar se o valor informado é realmente uma string.
 - **ler_data()**: Função responsável por solicitar ao usuário uma data e validar se o valor informado é realmente uma data.
 - **coleta_simulada()**: Função responsável por solicitar ao usuário informações sobre uma região e retornar um dicionário com os dados coletados.
+- **validar_dados()**: Função responsável por validar se os dados coletados são válidos e retornar um dicionário com os dados processados.
 - **processar_dados()**: Função responsável por processar os dados coletados e retornar um dicionário com os dados processados.
 - **gerar_alerta()**: Função responsável por gerar um alerta com base em variáveis pré-definidas e retornar um dicionário com os dados processados.
 - **main()**: Função principal responsável por executar o programa.
@@ -45,6 +46,7 @@ A utilização de Python para o desenvolvimento do Orbis Sentinel justifica-se p
 - **ICONE_NIVEL (Dict[str, str])**: Dicionário contendo os ícones dos níveis de risco.
 - **DESCRICAO_RISCO (Dict[str, str])**: Dicionário contendo as descrições dos níveis de risco.
 - **REGIOES (Dict[str, List[str]])**: Dicionário contendo as regiões pré-definidas.
+- **LIMIARES (Dict[str, Dict[str, float]])**: Dicionário contendo os limiares das regras de negócio.
 
 ### Condicionais
 - **if/elif/else**: Utilizado para verificar se os valores informados pelo usuário são válidos e para gerar alertas com base no nível de risco.
