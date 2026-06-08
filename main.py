@@ -228,13 +228,13 @@ def classificar_risco(dados):
     if lat < -90 or lat > 90 or lon < -180 or lon > 180 or area <= 0 or ndvi < 0 or ndvi > 1 or focos_input < 0 or umidade < 0 or umidade > 100 or len(historico) != 7:
         return "INVALIDO"
 
-    if focos_input >= 10 or (umidade <= 10 and ndvi <= 0.3):
+    if focos_input >= 10 or (umidade <= 20 and ndvi <= 0.3):
         return "CRITICO"
 
-    if focos_input >= 5 or (umidade <= 20 and ndvi <= 0.5):
+    if focos_input >= 5 or (umidade <= 35 and ndvi <= 0.3):
         return "ALERTA"
 
-    if focos_input >= 2 or (umidade <= 30 and ndvi <= 0.7):
+    if focos_input >= 1 or ndvi <= 0.5:
         return "ATENCAO"
 
     return "NORMAL"
