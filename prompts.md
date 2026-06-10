@@ -6,6 +6,18 @@ copiloto de desenvolvimento, utilizando em casos complexos onde eu não consegui
 ### Prompt inicial para desenvolvimento do projeto Orbis Sentinel
 Você é um professor de programação Python para iniciantes. Analise meu código, e principalmente minha função de coleta de dados em Python e identifique possíveis falhas de validação. O sistema recebe informações digitadas pelo usuário, como latitude, longitude, área monitorada, NDVI, focos de calor, umidade do solo, histórico de focos e data. Verifique situações em que o programa possa encerrar por erro de conversão ou entrada inválida. Sugira correções utilizando apenas conceitos básicos de Python, como if, elif, else, while, listas, dicionários e funções. Priorize soluções compatíveis com o nível de um estudante do primeiro período e explique claramente cada alteração proposta.
 
+### Prompt para criação do dados.py para testes com dados reais
+Crie um arquivo dados.py contendo uma lista de dicionários, onde cada dicionário representa uma região monitorada pelo Orbis Sentinel. Cada dicionário deve conter as seguintes informações: "regiao", "lat", "lon", "area_km2", "ndvi_index", "focos_calor", "umidade_solo_percent", "historico_focos" e "timestamp". Utilize informações reais ou simuladas de forma crível para representar as condições das regiões. Evite usar dados muito discrepantes com a realidade. Tenha em consideração que as regiões monitoradas são:
+1. Amazonia_AM_Setor_Norte
+2. Cerrado_MT_Setor_Leste
+3. Pantanal_MS_Setor_Oeste
+4. Caatinga_BA_Setor_Central
+5. Cerrado_GO_Setor_Sul
+6. MataAtlantica_SP_Setor_Vale
+7. Pampa_RS_Setor_Sul
+8. Amazonia_PA_Setor_Leste
+9. Cerrado_TO_Setor_Norte
+
 ### Prompt para auxílio no problema de importação dos dados.py
 Estou tendo problemas com a importação dos dados, veja bem, a principio, o sistema deveria receber informações digitadas pelo usuário, como latitude, longitude, área monitorada, NDVI, focos de calor, umidade do solo e histórico de focos e está recebendo, porém, está com problemas de leitura nas funções.
 

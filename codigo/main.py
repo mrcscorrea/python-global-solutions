@@ -22,7 +22,7 @@
 #  Ele interage com o módulo de dados e executa a lógica principal
 #  do sistema de alerta de incêndios.
 # ===========================================================================
-from dados import REGIOES
+from codigo.dados import REGIOES
 
 # ── Constantes de exibição (Visualização do código) ────────────────────────────
 LINHA_DUPLA  = "=" * 72
