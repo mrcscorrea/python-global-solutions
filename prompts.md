@@ -11,3 +11,6 @@ Estou tendo problemas com a importação dos dados, veja bem, a principio, o sis
 
 ### Prompt para auxílio na validação de inputs (tratamento de erro)
 Observe o código acima, quero que você me ajude adicionando sistemas de verificação nos inputs, para que o código não quebre se o usuário não seguir a lógica (exemplo, coloco uma letra onde é um float).
+
+### Prompt para auxílio no README.md
+Me ajuda a escrever o README.md para o projeto da discipliina de Python. O projeto "Orbis Sentinel" é um sistema de alerta de incêndios que recebe informações digitadas pelo usuário, como latitude, longitude, área monitorada, NDVI, focos de calor, umidade do solo, histórico de focos e data. O sistema processa esses dados com base em limiares para gerar alertas de risco. O projeto também possui funções que permitem a coleta de dados de regiões pré-definidas, geração de relatórios e exibição de alertas. O sistema foi desenvolvido ao longo do primeiro semestre da graduação em Engenharia de Software, como parte da disciplina de Computational Thinking With Python, e é um trabalho que busca aplicar os conhecimentos adquiridos em sala de aula no desenvolvimento de um sistema para combater queimadas.
